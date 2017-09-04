@@ -7,6 +7,7 @@ var firstName;
 var lastName;
 var contacts;
 var messages;
+var privateMessage;
 (function() {
 	socket = new SockJS('http://localhost:8090/gs-guide-websocket');
 	stompClient = Stomp.over(socket);
@@ -23,12 +24,19 @@ var messages;
 function subscribe() {
 	console.log("Subscribing topics");
 	stompClient.subscribe('/topic/greeting-' + sessionId, handleGreetings);
+	stompClient.subscribe('/topic/privateMessage-' + sessionId, handlePrivateMessage);
 	stompClient.subscribe('/topic/contacts-' + sessionId, handleContacts);
 	stompClient.subscribe('/topic/userDetails-' + sessionId, handleUserDetails);
 	stompClient.subscribe('/topic/search-' + sessionId, handleSearch);
 	stompClient.send("/app/init", {}, JSON.stringify({
 		'username' : getURLParameter("username")
 	}));
+}
+
+function handlePrivateMessage(message){
+	privateMessage = JSON.parse(message.body);
+	console.log("From:/topic/privateMessage-->" + privateMessage);
+	insertPrivateMessage();
 }
 
 function handleUserDetails(userDetails){
@@ -51,14 +59,37 @@ function handleGreetings(greetings){
 function insertMessages(){
 	$('#conversation').html("");
 	for(var i = 0; i < messages.length; i++){
+		var dateTime = new Date(messages[i].created);
+		dateTime = getFormattedDateTime(dateTime);
+		console.log(dateTime);
 		if(messages[i].senderId == id){
 			$('#conversation').append('<div class="row message-body"><div class="col-sm-12 message-main-sender"><div class="sender"><div class="message-text">'+
-					messages[i].content + '</div><span class="message-time pull-right"> Sun </span></div></div></div>');
+					messages[i].content + '</div><span class="message-time pull-right">' + dateTime + '</span></div></div></div>');
 		}else{
 			$('#conversation').append('<div class="row message-body"><div class="col-sm-12 message-main-receiver"><div class="receiver"><div class="message-text">'+
-					messages[i].content + '</div><span class="message-time pull-right"> Sun </span></div></div></div>');
+					messages[i].content + '</div><span class="message-time pull-right">' + dateTime + '</span></div></div></div>');
 		}
 	}
+	$('#conversation').animate({
+	    scrollTop: $('#conversation').get(0).scrollHeight
+	}, 1500);
+}
+
+function insertPrivateMessage(){
+	console.log("Inserting private message:" + privateMessage);
+	var dateTime = new Date(privateMessage.created);
+	dateTime = getFormattedDateTime(dateTime);
+	console.log(dateTime);
+	if(privateMessage.senderId == id){
+		$('#conversation').append('<div class="row message-body"><div class="col-sm-12 message-main-sender"><div class="sender"><div class="message-text">'+
+				privateMessage.content + '</div><span class="message-time pull-right">' + dateTime + '</span></div></div></div>');
+	}else{
+		$('#conversation').append('<div class="row message-body"><div class="col-sm-12 message-main-receiver"><div class="receiver"><div class="message-text">'+
+				privateMessage.content + '</div><span class="message-time pull-right">' + dateTime + '</span></div></div></div>');
+	}
+	$('#conversation').animate({
+	    scrollTop: $('#conversation').get(0).scrollHeight
+	}, 1500);
 }
 
 function handleContacts(receivedContacts){
@@ -100,8 +131,13 @@ function sendMessage() {
 		"toUserOrGroup": true,
 		"content" : message
 	}));
-	$('#conversation').append('<div class="row message-body"><div class="col-sm-12 message-main-sender"><div class="sender"><div class="message-text">'+
+	$("#comment").val("");
+	/*$('#conversation').append('<div class="row message-body"><div class="col-sm-12 message-main-sender"><div class="sender"><div class="message-text">'+
 			message + '</div><span class="message-time pull-right"> Sun </span></div></div></div>');
+	$("#comment").val("");
+	$('#conversation').animate({
+	    scrollTop: $('#conversation').get(0).scrollHeight
+	}, 1500);*/
 }
 
 function searchUsers(){
@@ -128,4 +164,22 @@ function getURLParameter(name) {
 			+ '([^&;]+?)(&|#|;|$)').exec(location.search) || [ null, '' ])[1]
 			.replace(/\+/g, '%20'))
 			|| null;
+}
+
+function addZero(i) {
+    if (i < 10) {
+        i = "0" + i;
+    }
+    return i;
+}
+
+function getFormattedDateTime(dateTime) {
+    var d = dateTime;
+    var date = addZero(d.getDate());
+    var month = addZero(d.getMonth()+1);
+    var year = addZero(d.getFullYear());
+    var h = addZero(d.getHours());
+    var m = addZero(d.getMinutes());
+    var s = addZero(d.getSeconds());
+    return h + ":" + m + ":" + s;// + " " + date + "/" + month + "/" + year;
 }
