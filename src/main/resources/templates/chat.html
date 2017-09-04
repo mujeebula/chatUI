@@ -43,7 +43,7 @@
 					<div class="row searchBox">
 						<div class="col-sm-12 searchBox-inner">
 							<div class="form-group has-feedback">
-								<input id="searchText" type="text" class="form-control"
+								<input onkeyup="searchContacts()"  id="searchContacts" type="text" class="form-control"
 									name="searchText" placeholder="Search"></input> <span
 									class="glyphicon glyphicon-search form-control-feedback"></span>
 							</div>
@@ -137,7 +137,7 @@
 						</div>
 					</div>
 					<div class="col-sm-8 col-xs-7 heading-name">
-						<a id="currentChatUser" class="heading-name-meta">Ankit </a> <span
+						<a id="currentChatUser" class="heading-name-meta">Start A New Conversation </a> <span
 							class="heading-online">Online</span>
 					</div>
 					<div class="col-sm-1 col-xs-1  heading-dot pull-right">
@@ -154,7 +154,7 @@
 							<a onclick="previous(this)" id="ankitjain28" name="20"> Show
 								Previous Message! </a>
 						</div>
-					</div-->
+					</div>
 
 					<div class="row message-body">
 						<div class="col-sm-12 message-main-receiver">
@@ -173,7 +173,7 @@
 								<span class="message-time pull-right"> Sun </span>
 							</div>
 						</div>
-					</div>
+					</div-->
 				</div>
 				<!-- Message Box End -->
 
