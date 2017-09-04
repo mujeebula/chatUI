@@ -141,7 +141,7 @@ function fetchMessages(index) {
 	currentChatUserId = contacts[index].id;
 	currentChatUser = contacts[index].username;
 	$("#currentChatUser").html(currentChatUser);
-	console.log("Select chatUser details:" + JSON.stringify(contact));
+	console.log("Selected chatUser details:" + JSON.stringify(contact));
 	getAllMessages(contact);
 }
 
