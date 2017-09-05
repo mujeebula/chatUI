@@ -1,4 +1,4 @@
-$(".heading-compose").click(function() {
+$("#showUserSearch").click(function() {
 	$(".side-two").css({
 		"left" : "0"
 	});

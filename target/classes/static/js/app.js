@@ -148,7 +148,7 @@ function insertContacts() {
 								+ i
 								+ ' onclick="fetchMessages(this.id)" class="row sideBar-body"><div class="col-sm-3 col-xs-3 sideBar-avatar"><div class="avatar-icon"><img src="http://shurl.esy.es/y"></img></div></div><div class="col-sm-9 col-xs-9 sideBar-main"><div class="row"><div class="col-sm-8 col-xs-8 sideBar-name"><span class="name-meta">'
 								+ contacts[i].username
-								+ '</span></div><div class="col-sm-4 col-xs-4 pull-right sideBar-time"><span class="time-meta pull-right">18:18 </span></div></div></div></div>');
+								+ '</span></div><div class="col-sm-4 col-xs-4 pull-right sideBar-time"><span class="time-meta pull-right"></span></div></div></div></div>');
 	}
 }
 
@@ -215,7 +215,7 @@ function handleSearch(result) {
 								+ i
 								+ '" onclick="addContact(this.id)" class="row sideBar-body"><div class="col-sm-3 col-xs-3 sideBar-avatar"><div class="avatar-icon"><img src="http://shurl.esy.es/y"></img></div></div><div class="col-sm-9 col-xs-9 sideBar-main"><div class="row"><div class="col-sm-8 col-xs-8 sideBar-name"><span class="name-meta">'
 								+ searchResults[i].username
-								+ '</span></div><div class="col-sm-4 col-xs-4 pull-right sideBar-time"><span class="time-meta pull-right">18:18 </span></div></div></div></div>');
+								+ '</span></div><div class="col-sm-4 col-xs-4 pull-right sideBar-time"><span class="time-meta pull-right"></span></div></div></div></div>');
 	}
 }
 
@@ -223,6 +223,8 @@ function handleSearch(result) {
  * Requests the server to add this user as a contact.
  */
 function addContact(index) {
+	$("#searchResults").html("");
+	$("#keyword").val("");
 	// hide search panel
 	$(".side-two").css({
 		"left" : "-100%"
@@ -234,7 +236,7 @@ function addContact(index) {
 			.append(
 					'<div onclick="fetchMessages(this.id)" class="row sideBar-body"><div class="col-sm-3 col-xs-3 sideBar-avatar"><div class="avatar-icon"><img src="http://shurl.esy.es/y"></img></div></div><div class="col-sm-9 col-xs-9 sideBar-main"><div class="row"><div class="col-sm-8 col-xs-8 sideBar-name"><span class="name-meta">'
 							+ selectedContact.username
-							+ '</span></div><div class="col-sm-4 col-xs-4 pull-right sideBar-time"><span class="time-meta pull-right">18:18 </span></div></div></div></div>');
+							+ '</span></div><div class="col-sm-4 col-xs-4 pull-right sideBar-time"><span class="time-meta pull-right"></span></div></div></div></div>');
 	currentChatUserId = selectedContact.id;
 	currentChatUser = selectedContact.username;
 	$("#currentChatUser").html(currentChatUser);
@@ -283,7 +285,7 @@ function searchContacts() {
 									+ i
 									+ ' onclick="fetchMessagesForSearchedUser(this.id)" class="row sideBar-body"><div class="col-sm-3 col-xs-3 sideBar-avatar"><div class="avatar-icon"><img src="http://shurl.esy.es/y"></img></div></div><div class="col-sm-9 col-xs-9 sideBar-main"><div class="row"><div class="col-sm-8 col-xs-8 sideBar-name"><span class="name-meta">'
 									+ contactSearchResults[i].username
-									+ '</span></div><div class="col-sm-4 col-xs-4 pull-right sideBar-time"><span class="time-meta pull-right">18:18 </span></div></div></div></div>');
+									+ '</span></div><div class="col-sm-4 col-xs-4 pull-right sideBar-time"><span class="time-meta pull-right"></span></div></div></div></div>');
 		}
 	} else {
 		// show all contacts
@@ -295,7 +297,7 @@ function searchContacts() {
 									+ i
 									+ ' onclick="fetchMessages(this.id)" class="row sideBar-body"><div class="col-sm-3 col-xs-3 sideBar-avatar"><div class="avatar-icon"><img src="http://shurl.esy.es/y"></img></div></div><div class="col-sm-9 col-xs-9 sideBar-main"><div class="row"><div class="col-sm-8 col-xs-8 sideBar-name"><span class="name-meta">'
 									+ contacts[i].username
-									+ '</span></div><div class="col-sm-4 col-xs-4 pull-right sideBar-time"><span class="time-meta pull-right">18:18 </span></div></div></div></div>');
+									+ '</span></div><div class="col-sm-4 col-xs-4 pull-right sideBar-time"><span class="time-meta pull-right"></span></div></div></div></div>');
 		}
 	}
 }

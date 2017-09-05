@@ -1,4 +1,4 @@
-package com.mindfire;
+package com.mindfire.controller;
 
 import javax.validation.Valid;
 

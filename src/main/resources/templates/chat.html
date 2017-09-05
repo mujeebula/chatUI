@@ -16,6 +16,31 @@
 
 	<div class="container app">
 
+
+		<!-- Modal -->
+		<div class="modal fade" id="myModal" role="dialog">
+			<div class="modal-dialog">
+
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Modal Header</h4>
+					</div>
+					<div class="modal-body">
+						<p>Some text in the modal.</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+
+
+
 		<div class="row app-one">
 
 			<div class="col-sm-4 side">
@@ -27,14 +52,16 @@
 								<img src="http://shurl.esy.es/y"></img>
 							</div>
 						</div>
-						<div class="col-sm-5 col-xs-4 heading-name">
-							<a id="myusername" class="heading-name-meta">myusername</a>
+						<div class="col-sm-4 col-xs-4 heading-name">
+							<a id="myusername" data-toggle="modal"
+								data-target="#userDetailModal" class="heading-name-meta">myusername</a>
 						</div>
 						<div class="col-sm-1 col-xs-1  heading-dot  pull-right">
 							<i class="fa fa-ellipsis-v fa-2x  pull-right" aria-hidden="true"></i>
 						</div>
-						<div class="col-sm-2 col-xs-2 heading-compose  pull-right">
-							<i class="fa fa-search-plus fa-2x  pull-right" aria-hidden="true"></i>
+						<div class="col-sm-3 col-xs-2 heading-compose  pull-right">
+							<i id="showUserSearch" data-toggle="modal" data-target="#myModal" 								class="fa fa-address-book-o fa-2x  pull-right"
+								aria-hidden="true"></i>
 						</div>
 					</div>
 					<!-- Heading End -->
@@ -45,7 +72,7 @@
 							<div class="form-group has-feedback">
 								<input onkeyup="searchContacts()" id="searchContacts"
 									type="text" class="form-control" name="searchText"
-									placeholder="Search"></input> <span
+									placeholder="Search Contacts"></input> <span
 									class="glyphicon glyphicon-search form-control-feedback"></span>
 							</div>
 						</div>
@@ -125,8 +152,6 @@
 				</div>
 				<!-- Sidebar End -->
 			</div>
-
-
 			<!-- New Message Sidebar End -->
 
 			<!-- Conversation Start -->
@@ -181,15 +206,16 @@
 
 				<!-- Reply Box -->
 				<div class="row reply">
-					<div class="col-sm-1 col-xs-1 reply-emojis">
+					<!--div class="col-sm-1 col-xs-1 reply-emojis">
 						<i class="fa fa-smile-o fa-2x"></i>
+					</div-->
+					<div class="col-sm-11 col-xs-9 reply-main">
+						<textarea class="form-control" rows="1" id="comment"
+							onkeypress="return checkEnterKey(event)"></textarea>
 					</div>
-					<div class="col-sm-9 col-xs-9 reply-main">
-						<textarea class="form-control" rows="1" id="comment" onkeypress="return checkEnterKey(event)"></textarea>
-					</div>
-					<div class="col-sm-1 col-xs-1 reply-recording">
+					<!--div class="col-sm-1 col-xs-1 reply-recording">
 						<i class="fa fa-microphone fa-2x" aria-hidden="true"></i>
-					</div>
+					</div-->
 					<div onclick="sendMessage()" class="col-sm-1 col-xs-1 reply-send">
 						<i class="fa fa-send fa-2x" aria-hidden="true"></i>
 					</div>

@@ -1,4 +1,4 @@
-package com.mindfire;
+package com.mindfire.controller;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
