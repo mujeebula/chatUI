@@ -12,24 +12,20 @@ public class User extends AbstractTimestampEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	private Long userId;
 	private String firstName;
 	private String lastName;
 	@Column(unique = true, nullable = false)
 	private String username;
-	private String password;
 
-	public User() {}
-	public User(String username, String password) {
+	public User() {
+	}
+
+	public User(Long userId, String username, String firstName, String lastName) {
+		this.userId = userId;
 		this.username = username;
-		this.password = password;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
+		this.firstName = firstName;
+		this.lastName  = lastName;
 	}
 
 	public Long getId() {
@@ -64,12 +60,19 @@ public class User extends AbstractTimestampEntity {
 		this.username = userName;
 	}
 
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", userName=" + username
-				+ ", password=" + password + "]";
+
+	public Long getUserId() {
+		return userId;
 	}
 
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", username=" + username + "]";
+	}
 
 }

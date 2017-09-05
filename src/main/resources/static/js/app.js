@@ -10,6 +10,9 @@ var messages;
 var privateMessage;
 var searchResults;
 var contactSearchResults;
+/*
+ * This anonymous function connects the client to webSocket end point. 
+ */
 (function() {
 	socket = new SockJS('http://localhost:8090/gs-guide-websocket');
 	stompClient = Stomp.over(socket);
@@ -23,9 +26,12 @@ var contactSearchResults;
 	});
 })();
 
+/*
+ * It sends request to subscribes all the required topic.
+ */
 function subscribe() {
 	console.log("Subscribing topics");
-	stompClient.subscribe('/topic/greeting-' + sessionId, handleGreetings);
+	stompClient.subscribe('/topic/allConversationMessage-' + sessionId, handleConversation);
 	stompClient.subscribe('/topic/privateMessage-' + sessionId,
 			handlePrivateMessage);
 	stompClient.subscribe('/topic/contacts-' + sessionId, handleContacts);
@@ -38,7 +44,8 @@ function subscribe() {
 
 function handlePrivateMessage(message) {
 	privateMessage = JSON.parse(message.body);
-	console.log("From:/topic/privateMessage-->" + privateMessage);
+	console.log("From:/topic/privateMessage-->"
+			+ JSON.stringify(privateMessage));
 	insertPrivateMessage();
 }
 
@@ -49,16 +56,19 @@ function handleUserDetails(userDetails) {
 	id = userDetails.id;
 	firstName = userDetails.firstName;
 	lastName = userDetails.lastName;
-	$("#myusername").text("#" + id + " " + username);
+	$("#myusername").text(firstName + " " + lastName);
 }
 
-function handleGreetings(greetings) {
-	console.log("From:/topic/greeting-->" + greetings.body);
-	messages = JSON.parse(greetings.body);
+function handleConversation(conversation) {
+	console.log("From:/topic/conversation-->" + conversation.body);
+	messages = JSON.parse(conversation.body);
 	console.log(messages);
 	insertMessages();
 }
 
+/*
+ * It inserts all the received messages into conversation div
+ */
 function insertMessages() {
 	$('#conversation').html("");
 	for (var i = 0; i < messages.length; i++) {
@@ -85,9 +95,14 @@ function insertMessages() {
 	}, 1500);
 }
 
+/*
+ * It inserts a newly arrived private message into conversation div
+ */
 function insertPrivateMessage() {
-	if (currentChatUserId == privateMessage.senderId || currentChatUserId == privateMessage.receiverId) {
-		console.log("Inserting private message:" + privateMessage);
+	if (currentChatUserId == privateMessage.senderId
+			|| currentChatUserId == privateMessage.receiverId) {
+		console.log("Inserting private message:"
+				+ JSON.stringify(privateMessage));
 		var dateTime = new Date(privateMessage.created);
 		dateTime = getFormattedDateTime(dateTime);
 		console.log(dateTime);
@@ -109,8 +124,8 @@ function insertPrivateMessage() {
 		$('#conversation').animate({
 			scrollTop : $('#conversation').get(0).scrollHeight
 		}, 1500);
-	}else{
-		//show new message notification
+	} else {
+		// show new message notification
 	}
 }
 
@@ -120,6 +135,9 @@ function handleContacts(receivedContacts) {
 	insertContacts();
 }
 
+/*
+ * This method inserts all the user contacts into allContactDiv
+ */
 function insertContacts() {
 	$('#allContactDiv').html("");
 	for (var i = 0; i < contacts.length; i++) {
@@ -134,6 +152,9 @@ function insertContacts() {
 	}
 }
 
+/*
+ * This method fetches all the messages between the selected contact and the user.
+ */
 function fetchMessages(index) {
 	console.log("Fetching..." + index);
 	console.log("Contact:" + JSON.stringify(contacts[index]));
@@ -152,6 +173,9 @@ function getAllMessages(contact) {
 	}));
 }
 
+/*
+ * It sends the message to the web socket server for further processing.
+ */
 function sendMessage() {
 	message = $("#comment").val();
 	console.log("Sending message");
@@ -164,6 +188,10 @@ function sendMessage() {
 	$("#comment").val("");
 }
 
+/*
+ * This method requests the server to get all the user names starting with the 
+ * typed keyword.
+ */
 function searchUsers() {
 	var keyword = $("#keyword").val();
 	console.log("Searching for:" + keyword);
@@ -173,6 +201,9 @@ function searchUsers() {
 	}));
 }
 
+/*
+ * It handles and shows the search results received from the server.
+ */
 function handleSearch(result) {
 	$("#searchResults").html("");
 	console.log(result.body);
@@ -188,6 +219,9 @@ function handleSearch(result) {
 	}
 }
 
+/*
+ * Requests the server to add this user as a contact.
+ */
 function addContact(index) {
 	// hide search panel
 	$(".side-two").css({
@@ -213,9 +247,7 @@ function addContact(index) {
 
 function filterIt(objects, searchKey) {
 	var results = [];
-
 	var toSearch = searchKey;
-
 	for (var i = 0; i < objects.length; i++) {
 		if (objects[i].username.indexOf(toSearch) != -1) {
 			results.push(objects[i]);
@@ -233,6 +265,9 @@ function fetchMessagesForSearchedUser(index) {
 	}
 }
 
+/*
+ * Search the available contacts in allContactsDiv
+ */
 function searchContacts() {
 	$('#allContactDiv').html("");
 	var keyword = $("#searchContacts").val();
@@ -265,6 +300,20 @@ function searchContacts() {
 	}
 }
 
+
+/*
+ * Utility function
+ */
+function checkEnterKey(e) {
+	if (e.keyCode == 13) {
+		sendMessage();
+		return false;
+	}
+}
+
+/*
+ * Utility function
+ */
 function getURLParameter(name) {
 	return decodeURIComponent((new RegExp('[?|&]' + name + '='
 			+ '([^&;]+?)(&|#|;|$)').exec(location.search) || [ null, '' ])[1]
@@ -272,6 +321,9 @@ function getURLParameter(name) {
 			|| null;
 }
 
+/*
+ * Utility function
+ */
 function addZero(i) {
 	if (i < 10) {
 		i = "0" + i;
@@ -279,6 +331,9 @@ function addZero(i) {
 	return i;
 }
 
+/*
+ * Utility function
+ */
 function getFormattedDateTime(dateTime) {
 	var d = dateTime;
 	var date = addZero(d.getDate());

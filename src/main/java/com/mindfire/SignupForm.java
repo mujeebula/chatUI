@@ -10,7 +10,16 @@ public class SignupForm {
 	private String username;
 
 	@NotNull
+	@Size(min = 2, max = 15)
 	private String password;
+	
+	@NotNull
+	@Size(min = 2, max = 30)
+	private String firstName;
+	
+	@NotNull
+	@Size(min = 2, max = 30)
+	private String lastName;
 
 	public String getUsername() {
 		return username;
@@ -28,8 +37,19 @@ public class SignupForm {
 		this.password = password;
 	}
 
-	@Override
-	public String toString() {
-		return "SignupForm [username=" + username + ", password=" + password + "]";
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 }

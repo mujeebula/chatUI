@@ -27,14 +27,14 @@
 								<img src="http://shurl.esy.es/y"></img>
 							</div>
 						</div>
-						<div class="col-sm-4 col-xs-4 heading-name">
+						<div class="col-sm-5 col-xs-4 heading-name">
 							<a id="myusername" class="heading-name-meta">myusername</a>
 						</div>
 						<div class="col-sm-1 col-xs-1  heading-dot  pull-right">
 							<i class="fa fa-ellipsis-v fa-2x  pull-right" aria-hidden="true"></i>
 						</div>
 						<div class="col-sm-2 col-xs-2 heading-compose  pull-right">
-							<i class="fa fa-comments fa-2x  pull-right" aria-hidden="true"></i>
+							<i class="fa fa-search-plus fa-2x  pull-right" aria-hidden="true"></i>
 						</div>
 					</div>
 					<!-- Heading End -->
@@ -185,7 +185,7 @@
 						<i class="fa fa-smile-o fa-2x"></i>
 					</div>
 					<div class="col-sm-9 col-xs-9 reply-main">
-						<textarea class="form-control" rows="1" id="comment"></textarea>
+						<textarea class="form-control" rows="1" id="comment" onkeypress="return checkEnterKey(event)"></textarea>
 					</div>
 					<div class="col-sm-1 col-xs-1 reply-recording">
 						<i class="fa fa-microphone fa-2x" aria-hidden="true"></i>
