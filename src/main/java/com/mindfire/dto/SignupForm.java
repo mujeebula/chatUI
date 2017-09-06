@@ -1,4 +1,4 @@
-package com.mindfire.controller;
+package com.mindfire.dto;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;

@@ -10,25 +10,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import com.mindfire.entity.User;
-import com.mindfire.entity.UserCredential;
-import com.mindfire.repository.LoginRepository;
-import com.mindfire.repository.UserCredentialRepository;
+
+import com.mindfire.dto.SignupForm;
+import com.mindfire.service.SignupService;
 
 /**
  * This controller handles the sign up process.
  * @author
- *
  */
 @Controller
 public class SignupController extends WebMvcConfigurerAdapter {
 
 	@Autowired
-	private LoginRepository loginRepository;
-	
-	@Autowired
-	private UserCredentialRepository userCredentialRepository;
-	
+	private SignupService signupService;
 	
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
@@ -37,7 +31,6 @@ public class SignupController extends WebMvcConfigurerAdapter {
     
     /**
      * This returns the sign up template.
-     * 
      * @param signupForm
      * @return
      */
@@ -50,26 +43,22 @@ public class SignupController extends WebMvcConfigurerAdapter {
      * It handles the sign up form submission.
      * On valid input it redirects the user to login page otherwise show sign up page with 
      * appropriate error.
-     * 
      * @param signupForm
      * @param bindingResult
      * @return
      */
     @PostMapping("/signup")
     public String checkSignup(@Valid SignupForm signupForm, BindingResult bindingResult) {
+    	boolean isFormValid = false;
     	if (bindingResult.hasErrors()) {
             return "signup";
         }
-    	UserCredential userCredential = new UserCredential(signupForm.getUsername(), signupForm.getPassword());
-    	try {
-    		userCredential = userCredentialRepository.save(userCredential);
-    	}catch(Exception e) {
+    	isFormValid = signupService.isFormValid(signupForm);
+    	if(isFormValid) {
+            return "redirect:/login";
+    	}else {
     		bindingResult.addError(new FieldError("signForm", "username", "Username already exist."));
-            return "signup";	
+            return "signup";
     	}
-    	User user = new User(userCredential.getId(), userCredential.getUsername(), 
-    			signupForm.getFirstName(), signupForm.getLastName());
-    	loginRepository.save(user);
-        return "redirect:/login";
     }
 }

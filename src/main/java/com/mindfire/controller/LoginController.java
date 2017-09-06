@@ -13,10 +13,8 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.mindfire.entity.User;
-import com.mindfire.entity.UserCredential;
-import com.mindfire.repository.LoginRepository;
-import com.mindfire.repository.UserCredentialRepository;
+import com.mindfire.dto.LoginForm;
+import com.mindfire.service.LoginService;
 
 /**
  * This controller handles the login process
@@ -28,10 +26,7 @@ import com.mindfire.repository.UserCredentialRepository;
 public class LoginController extends WebMvcConfigurerAdapter {
 
 	@Autowired
-	private LoginRepository loginRepository;
-
-	@Autowired
-	private UserCredentialRepository userCredentialRepository;
+	private LoginService loginService;
 
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
@@ -42,7 +37,6 @@ public class LoginController extends WebMvcConfigurerAdapter {
 	
 	/**
 	 * It redirects the user to login page.
-	 * 
 	 * @return
 	 */
 	@GetMapping("/")
@@ -52,7 +46,6 @@ public class LoginController extends WebMvcConfigurerAdapter {
 
 	/**
 	 * It returns the login template
-	 * 
 	 * @param loginForm
 	 * @return
 	 */
@@ -64,7 +57,6 @@ public class LoginController extends WebMvcConfigurerAdapter {
 	/**
 	 * This method handles the login form submission and user credential validation.
 	 * Login success redirects to chat page otherwise show login page with error.
-	 * 
 	 * @param loginForm
 	 * @param bindingResult
 	 * @param redirectAttributes
@@ -73,27 +65,23 @@ public class LoginController extends WebMvcConfigurerAdapter {
 	@PostMapping("/login")
 	public String checkLogin(@Valid LoginForm loginForm, BindingResult bindingResult,
 			RedirectAttributes redirectAttributes) {
+		boolean isAuthenticated = false;
+		
 		if (bindingResult.hasErrors()) {
 			return "login";
 		}
-		try {
-			UserCredential userCredential = userCredentialRepository.findByUsernameAndPassword(loginForm.getUsername(),
-					loginForm.getPassword());
-			if (userCredential == null) {
-				bindingResult.addError(new FieldError("loginForm", "password", "Invalid credentials"));
-				return "login";
-			}
-		}catch(Exception e) {
+		isAuthenticated = loginService.isAuthenticated(loginForm);
+		if(!isAuthenticated) {
+			bindingResult.addError(new FieldError("loginForm", "password", "Invalid credentials"));
 			return "login";
+		}else {
+			redirectAttributes.addAttribute("username", loginForm.getUsername());
+			return "redirect:/chat";
 		}
-		User user = loginRepository.findByUsername(loginForm.getUsername());
-		redirectAttributes.addAttribute("username", user.getUsername());
-		return "redirect:/chat";
 	}
 	
 	/**
 	 * It returns the chat template.
-	 * 
 	 * @param username
 	 * @return
 	 */

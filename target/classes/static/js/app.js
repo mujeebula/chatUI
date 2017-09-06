@@ -37,9 +37,15 @@ function subscribe() {
 	stompClient.subscribe('/topic/contacts-' + sessionId, handleContacts);
 	stompClient.subscribe('/topic/userDetails-' + sessionId, handleUserDetails);
 	stompClient.subscribe('/topic/search-' + sessionId, handleSearch);
+	
+	stompClient.subscribe('/topic/conversation-' + sessionId, handleConversation);
 	stompClient.send("/app/init", {}, JSON.stringify({
 		'username' : getURLParameter("username")
 	}));
+}
+
+function handleConversation(conversation){
+	console.log(JSON.tringify(conversation));
 }
 
 function handlePrivateMessage(message) {

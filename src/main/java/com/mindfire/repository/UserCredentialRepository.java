@@ -2,10 +2,10 @@ package com.mindfire.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.mindfire.entity.UserCredential;
+import com.mindfire.entity.Credential;
 
-public interface UserCredentialRepository extends JpaRepository<UserCredential, Long> {
+public interface UserCredentialRepository extends JpaRepository<Credential, Long> {
 
-	UserCredential findByUsernameAndPassword(String username, String password);
+	Credential findByUserIdAndPassword(Long userId, String password);
 
 }
