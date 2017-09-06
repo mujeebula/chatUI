@@ -65,12 +65,12 @@ public class LoginController extends WebMvcConfigurerAdapter {
 	@PostMapping("/login")
 	public String checkLogin(@Valid LoginForm loginForm, BindingResult bindingResult,
 			RedirectAttributes redirectAttributes) {
-		boolean isAuthenticated = false;
+//		boolean isAuthenticated = false;
 		
 		if (bindingResult.hasErrors()) {
 			return "login";
 		}
-		isAuthenticated = loginService.isAuthenticated(loginForm);
+		boolean isAuthenticated  = loginService.isAuthenticated(loginForm);
 		if(!isAuthenticated) {
 			bindingResult.addError(new FieldError("loginForm", "password", "Invalid credentials"));
 			return "login";
