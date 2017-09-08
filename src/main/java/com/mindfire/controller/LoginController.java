@@ -1,5 +1,9 @@
 package com.mindfire.controller;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +20,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.mindfire.dto.LoginForm;
 import com.mindfire.service.LoginService;
 
-/**
+/*
+ * LoginController.java
+ * 
  * This controller handles the login process
- * @author 
- *
  */
 
 @Controller
@@ -31,7 +35,6 @@ public class LoginController extends WebMvcConfigurerAdapter {
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/signup").setViewName("signup");
-		registry.addViewController("/home").setViewName("home");
 		registry.addViewController("/login").setViewName("login");
 	}
 	
@@ -64,13 +67,22 @@ public class LoginController extends WebMvcConfigurerAdapter {
 	 */
 	@PostMapping("/login")
 	public String checkLogin(@Valid LoginForm loginForm, BindingResult bindingResult,
-			RedirectAttributes redirectAttributes) {
-//		boolean isAuthenticated = false;
-		
-		if (bindingResult.hasErrors()) {
-			return "login";
+			RedirectAttributes redirectAttributes) {		
+		boolean isAuthenticated = false;
+		try {
+			if (bindingResult.hasErrors()) {
+				return "login";
+			}
+			isAuthenticated = loginService.isAuthenticated(loginForm);
+		}catch(Exception ex) {
+			String error = "";
+			if(ex instanceof SQLException) {
+				error = "Got some Database errror:" + ex.getMessage();
+			}else {
+				error = "Somethig went wrong"  + ex.getMessage();
+			}
+			Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, error);
 		}
-		boolean isAuthenticated  = loginService.isAuthenticated(loginForm);
 		if(!isAuthenticated) {
 			bindingResult.addError(new FieldError("loginForm", "password", "Invalid credentials"));
 			return "login";

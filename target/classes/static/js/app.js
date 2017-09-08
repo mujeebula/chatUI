@@ -34,11 +34,6 @@ var conversations = [];
  */
 function subscribe() {
 	console.log("Subscribing topics");
-	// stompClient.subscribe('/topic/allConversationMessage-' + sessionId,
-	// handleConversation);
-	// stompClient.subscribe('/topic/privateMessage-' + sessionId,
-	// handlePrivateMessage);
-	// stompClient.subscribe('/topic/contacts-' + sessionId, handleContacts);
 	// User details like name user name user id
 	stompClient.subscribe('/topic/userDetails-' + sessionId, handleUserDetails);
 	// fetch all conversation user is involved in already
@@ -47,14 +42,15 @@ function subscribe() {
 	// get all messages of the selected conversation
 	stompClient.subscribe('/topic/conversation-message-' + sessionId,
 			handleConversationMessages);
-	// search user names
-	// stompClient.subscribe('/topic/search-' + sessionId, handleSearch);
 	// Initialize
 	stompClient.send("/app/getConversations", {}, JSON.stringify({
 		'username' : getURLParameter("username")
 	}));
 }
 
+/*
+ * On receiving user details update the view and variables
+ */
 function handleUserDetails(userDetails) {
 	console.log("/topic/userDetails-->" + userDetails.body);
 	var userDetails = JSON.parse(userDetails.body);
@@ -65,6 +61,9 @@ function handleUserDetails(userDetails) {
 	$("#myusername").text(firstName + " " + lastName);
 }
 
+/*
+ * On receiving the list of conversations insert them into view
+ */
 function handleConversation(cons) {
 	console.log("BODY:" + cons.body);
 	conversations = JSON.parse(cons.body);
@@ -72,6 +71,9 @@ function handleConversation(cons) {
 	insertConversations(conversations);
 }
 
+/*
+ * Inserts the conversation messages into view
+ */
 function handleConversationMessages(conversationMessages) {
 	conversationMessages = JSON.parse(conversationMessages.body);
 	if (isArray(conversationMessages)) {
@@ -130,6 +132,9 @@ function handleConversationMessages(conversationMessages) {
 	}, 1500);
 }
 
+/*
+ * Inserts the conversations into view
+ */
 function insertConversations(conversations) {
 	console.log("Inserting conversations : count=" + conversations.length);
 	$('#allContactDiv').html("");
@@ -145,6 +150,9 @@ function insertConversations(conversations) {
 	}
 }
 
+/*
+ * Fetch the messages for selected conversation
+ */
 function fetchConversationMessages(index) {
 	console.log(typeof Array);
 	index = parseInt(index);
@@ -160,6 +168,9 @@ function fetchConversationMessages(index) {
 	}));
 }
 
+/*
+ * It sends the message to desired destination
+ */
 function sendMessage() {
 	message = $("#comment").val();
 	console.log("Sendingmessage:" + message);

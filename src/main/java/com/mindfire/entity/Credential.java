@@ -6,6 +6,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+/*
+ * Credential.java
+ * 
+ * An entity used to store the user credential
+ */
 @Entity
 public class Credential extends AbstractTimestampEntity {
 

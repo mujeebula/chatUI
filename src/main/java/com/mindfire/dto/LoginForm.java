@@ -3,6 +3,11 @@ package com.mindfire.dto;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+/*
+ * LoginForm.java
+ * 
+ * A DTO used for Login activity
+ */
 public class LoginForm {
 	@NotNull
 	@Size(min = 2, max = 30)

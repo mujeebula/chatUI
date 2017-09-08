@@ -3,6 +3,11 @@ package com.mindfire.dto;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+/*
+ * SignupForm.java
+ * 
+ * DTO used for Sign up activity
+ */
 public class SignupForm {
 
 	@NotNull

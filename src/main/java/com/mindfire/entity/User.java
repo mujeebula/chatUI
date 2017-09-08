@@ -6,6 +6,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+/*
+ * User.java
+ * 
+ * Entity used to store user details
+ */
 @Entity
 public class User extends AbstractTimestampEntity {
 
